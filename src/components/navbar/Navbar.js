@@ -1,27 +1,48 @@
-"use client";
+'use client';
+import { Home, History, User, LogOut } from 'lucide-react';
+import Link from 'next/link';
+import { cn } from '@/lib/utils';
+import { usePathname } from 'next/navigation';
 
-import NavLink from "./NavLink";
-import { Home, History, User, LogOut } from "lucide-react";
+const NavItem = ({ href, path, children, ...props }) => {
+  const active = href === path;
+
+  return (
+    <Link
+      className={cn(
+        'flex flex-col justify-center items-center pt-[12px] pb-[8px] px-5 hover:bg-gray-300/50 transition-colors ease-in-out duration-300',
+        active ? 'bg-gray-300/50 shadow-sm' : ''
+      )}
+      href={href}
+      {...props}
+    >
+      {children}
+    </Link>
+  );
+};
 
 const Navbar = () => {
+  const path = usePathname();
+
   return (
-    <nav className="w-full h-[70px] flex justify-center items-center fixed left-0 bottom-0 shadow-sm z-50 bg-white">
-      <div className="w-full flex items-center justify-center">
-        <div className="flex md:space-x-32 space-x-20">
-          <NavLink href="/" icon={<Home size={30} absoluteStrokeWidth />} />
-          <NavLink
-            href="/history"
-            icon={<History size={30} absoluteStrokeWidth />}
-          />
-          <NavLink
-            href="/profile"
-            icon={<User size={30} absoluteStrokeWidth />}
-          />
-          <NavLink
-            href="/logout"
-            icon={<LogOut size={30} absoluteStrokeWidth />}
-          />
-        </div>
+    <nav className="w-full max-w-xl m-auto h-[64px] fixed left-1/2 translate-x-[-50%] bottom-0 shadow-sm z-50 bg-white content-center">
+      <div className="w-full m-auto grid grid-cols-4 content-center">
+        <NavItem href="/" path={path}>
+          <Home size={24} />
+          <div className="text-md font-ligh">Home</div>
+        </NavItem>
+        <NavItem href="/history" path={path}>
+          <History size={24} />
+          <div className="text-md font-light">History</div>
+        </NavItem>
+        <NavItem href="/profile" path={path}>
+          <User size={24} />
+          <div className="text-md font-light">Profile</div>
+        </NavItem>
+        <NavItem href="/logout" path={path}>
+          <LogOut size={24} />
+          <div className="text-md font-light">LogOut</div>
+        </NavItem>
       </div>
     </nav>
   );
